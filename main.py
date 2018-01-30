@@ -57,16 +57,32 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :return: The Tensor for the last layer of output
     """
     # TODO: Implement function
-    conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    input = tf.layers.conv2d_transpose(conv_1x1, num_classes, 4, 2, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    tf.Print(input, [tf.shape(input)[1:3]])
+    kernel_reg = tf.contrib.layers.l2_regularizer(1e-3)
+    kernel_init = tf.random_normal_initializer(stddev=0.01)
+    #kernel_init = tf.truncated_normal_initializer(stddev = 0.01)
 
-    input = tf.add(input, vgg_layer4_out)
-    input = tf.layers.conv2d_transpose(input, num_classes, 4, 2, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    input = tf.add(input, vgg_layer3_out)
-    input = tf.layers.conv2d_transpose(input, num_classes, 16, 8, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    # 1x1 convolutions on layers 3, 4 and 7, using L2 regularizer
+    conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3_out, num_classes, kernel_size=1, padding='same',
+                                           kernel_regularizer=kernel_reg, kernel_initializer=kernel_init)
+    conv_1x1_layer4 = tf.layers.conv2d(vgg_layer4_out, num_classes, kernel_size=1, padding='same',
+                                           kernel_regularizer=kernel_reg, kernel_initializer=kernel_init)
+    conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7_out, num_classes, kernel_size=1, padding='same',
+                                           kernel_regularizer=kernel_reg, kernel_initializer=kernel_init)
 
-    return input
+    # upsampling - adding transposed convolution layers, and adding skip connection layers
+    deconv_1 = tf.layers.conv2d_transpose(conv_1x1_layer7, num_classes, kernel_size=4, strides=2, padding='same',
+                                       kernel_regularizer=kernel_reg, kernel_initializer=kernel_init)
+    skip_1 = tf.add(deconv_1, conv_1x1_layer4)
+
+    deconv_2 = tf.layers.conv2d_transpose(skip_1, num_classes, kernel_size=4, strides=2, padding='same',
+                                       kernel_regularizer=kernel_reg, kernel_initializer=kernel_init)
+    skip_2 = tf.add(deconv_2, conv_1x1_layer3)
+
+    # transpose layer for the output to match the input size
+    deconv_3 = tf.layers.conv2d_transpose(skip_2, num_classes, kernel_size=16, strides=8, padding='same',
+                                       kernel_regularizer=kernel_reg, kernel_initializer=kernel_init)
+
+    return deconv_3
 
 tests.test_layers(layers)
 
@@ -81,7 +97,9 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     :return: Tuple of (logits, train_op, cross_entropy_loss)
     """
     # TODO: Implement function
-    logits = tf.reshape(input, (-1, num_classes))
+    logits = tf.reshape(nn_last_layer, (-1, num_classes))
+    labels = tf.reshape(correct_label, (-1, num_classes))
+    cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
     return None, None, None
 tests.test_optimize(optimize)
