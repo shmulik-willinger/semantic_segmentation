@@ -144,16 +144,13 @@ tests.test_train_nn(train_nn)
 def run():
     num_classes = 2
     image_shape = (160, 576)
-    data_dir = './data'
+    #data_dir = './data'
+    data_dir = "C:/Users/swillin/PycharmProjects/nano/CarND-Semantic-Segmentation-master"
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
-
-    # OPTIONAL: Train and Inference on the cityscapes dataset instead of the Kitti dataset.
-    # You'll need a GPU with at least 10 teraFLOPS to train on.
-    #  https://www.cityscapes-dataset.com/
 
     with tf.Session() as sess:
         # Path to vgg model
@@ -161,19 +158,28 @@ def run():
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
 
-        # OPTIONAL: Augment Images for better results
-        #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
-
-        # TODO: Build NN using load_vgg, layers, and optimize function
+        # Build the NN using load_vgg and layers
+        print("Loading pretrained VGG model ...")
         input_image, keep_prob, layer3_out, layer_4_out, layer7_out = load_vgg(sess, vgg_path)
-        layer_output = layers(layer3_out, layer_4_out, layer7_out, num_classes)
+        print("Adding decoder layers for FCN model ...")
+        output_layer = layers(layer3_out, layer_4_out, layer7_out, num_classes)
 
+        # Optimize function
+        print("Creating loss and optimizer ...")
+        correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes], name='correct_label')
+        learning_rate = tf.placeholder(tf.float32, name='learning_rate')
+        logits, train_op, cross_entropy_loss = optimize(output_layer, correct_label, learning_rate, num_classes)
 
+        # Train NN using the train_nn function
+        print("Training the network ...")
+        epochs = 50
+        batch_size = 5
+        train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
+             correct_label, keep_prob, learning_rate)
 
-        # TODO: Train NN using the train_nn function
-
-        # TODO: Save inference data using helper.save_inference_samples
-        #  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+        # Save inference data
+        print("Saving inference data ...")
+        helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
 
         # OPTIONAL: Apply the trained model to a video
 
