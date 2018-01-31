@@ -135,8 +135,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
         for images, label in get_batches_fn(batch_size):
             _, loss = sess.run([train_op, cross_entropy_loss],
                                feed_dict={input_image: images, correct_label: label, keep_prob: 0.5,
-                                          learning_rate: 0.0009})
-            print("Epoch {}".format(epoch + 1), " loss: {:.4f}".format(loss))
+                                          learning_rate: 0.001})
+        print("Epoch {}".format(epoch + 1), " loss: {:.4f}".format(loss))
     print("Training for {} epochs finished successfully".format(epochs))
 tests.test_train_nn(train_nn)
 
@@ -144,8 +144,8 @@ tests.test_train_nn(train_nn)
 def run():
     num_classes = 2
     image_shape = (160, 576)
-    #data_dir = './data'
-    data_dir = "C:/Users/swillin/PycharmProjects/nano/CarND-Semantic-Segmentation-master"
+    data_dir = './data'
+    #data_dir = "C:/Users/swillin/PycharmProjects/nano/CarND-Semantic-Segmentation-master"
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
 
@@ -173,7 +173,7 @@ def run():
         # Train NN using the train_nn function
         print("Training the network ...")
         epochs = 50
-        batch_size = 5
+        batch_size = 6
         train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
              correct_label, keep_prob, learning_rate)
 
