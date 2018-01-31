@@ -36,11 +36,13 @@ The final loss value was 0.0572, and the project labels most pixels of roads clo
 
 ## Sample images
 
+Here are some test images from models that were trained with different Epochs. It's nice to observe how the segmentation improves over time.
+
 10 Epochs     |  25 Epochs  |  40 Epochs  | 50 Epochs - Best results
 :----------------:|:----------------:|:-----------------:|:-----------------:
 ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/10_5/umm_000015.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/25_5/umm_000015.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/40_5/umm_000015.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/50_5/umm_000015.png?raw=true)
 ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/25_5/uu_000005.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/40_5/uu_000005.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/50_5/uu_000005.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/10_5/uu_000005.png?raw=true)
-![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/10_5/uu_000082.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/25_5/uu_000082.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/40_5/uu_000082.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/50_5/uu_000082.png?raw=true)
+![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/10_5/uu_000082.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/50_5/uu_000082.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/40_5/uu_000082.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/25_5/uu_000082.png?raw=true)
 ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/50_5/uu_000095.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/25_5/uu_000095.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/40_5/uu_000095.png?raw=true)  |  ![]( https://github.com/shmulik-willinger/semantic_segmentation/blob/master/readme_img/10_5/uu_000095.png?raw=true)
 
 Prerequisites and Executing
