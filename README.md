@@ -13,7 +13,7 @@ The project consist of the following files:
 * [`project_tests.py`](./project_tests.py) - perform tests for the main methods of the project
 * [`helper.py`](./helper.py) - for actions like downloading the pretrained vgg model, function to create batches of training data and Generate test output
 
-## Architecture and Training
+### Architecture and Training
 
 The project is based on the `Fully Convolutional Networks for Semantic Segmentation` paper (attached). Starting with the VGG-16 model, adding 1x1 convolutions on layers 3, 4 and 7, using L2 regularizer for each layer, adding transposed convolution layers for Upsampling, and skip connection layers. The final transpose layer for the output to match the input size was set with num_classes=2 (road or not).
 
@@ -34,7 +34,7 @@ Training was done on an Amazon GPU Spot instance type 'g3.4xlarge' and was runni
 
 The final loss value was 0.0572
 
-## Sample images
+### Sample images
 
 10 Epochs               |  20 Epochs
 :---------------------:|:---------------------:
